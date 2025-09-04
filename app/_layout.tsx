@@ -1,28 +1,19 @@
 import NavigationBar from "@/components/navigation-bar/NavigationBar";
-import { Stack } from "expo-router";
-import { SafeAreaView, Text, View, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export default function RootLayout() {
   return (
     <SafeAreaView style={styles.container}>
-      {/* Custom Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>🚀 My App</Text>
+      <View style={styles.content}>
+        <NavigationBar />
       </View>
-
-      {/* Navigation screens */}
-      {/* <Stack screenOptions={{ headerShown: false }} /> */}
-
-      {/* Custom Footer */}
-      <NavigationBar />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: "red" }, // <- same background for all
   header: { padding: 16, backgroundColor: "#007AFF" },
   headerText: { color: "#fff", fontSize: 18, fontWeight: "600" },
-  footer: { padding: 12, backgroundColor: "#eee", alignItems: "center" },
-  footerText: { fontSize: 14, color: "#666" },
+  content: { flex: 1, color: "#06dbadff", backgroundColor: "#bb2b2bff" },
 });

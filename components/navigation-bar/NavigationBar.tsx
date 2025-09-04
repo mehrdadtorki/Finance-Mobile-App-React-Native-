@@ -1,3 +1,7 @@
+import Analytics from "@/app/pages/analytics";
+import Card from "@/app/pages/card";
+import Home from "@/app/pages/home";
+import Profile from "@/app/pages/profile";
 import React from "react";
 import {
   Alert,
@@ -10,15 +14,6 @@ import { CurvedBottomBar } from "react-native-curved-bottom-bar";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { JSX } from "react/jsx-runtime";
 import CircleIcon from "../../assets/icons/Scan.svg";
-import Svg, { Circle } from "react-native-svg";
-
-const Screen1: React.FC = () => {
-  return <View style={styles.screen1} />;
-};
-
-const Screen2: React.FC = () => {
-  return <View style={styles.screen2} />;
-};
 
 type RenderIconProps = {
   routeName: string;
@@ -36,26 +31,31 @@ export default function App(): JSX.Element {
     let icon: string = "";
 
     switch (routeName) {
-      case "title1":
+      case "HomePage":
         icon = "home";
         break;
-      case "title2":
-        icon = "signal";
+      case "AnalyticsPage":
+        icon = "line-chart";
         break;
-      case "title3":
+      case "CardPage":
         icon = "credit-card";
         break;
-      case "title4":
+      case "ProfilePage":
         icon = "user-o";
         break;
     }
 
     return (
-      <FontAwesome
-        name={icon}
-        size={25}
-        color={routeName === selectedTab ? "#6172F3" : "gray"}
-      />
+      <>
+        <FontAwesome
+          name={icon}
+          size={25}
+          color={routeName === selectedTab ? "#6172F3" : "gray"}
+        />
+        <View
+          style={routeName === selectedTab ? styles.selectedTabBarItem : {}}
+        />
+      </>
     );
   };
 
@@ -78,44 +78,43 @@ export default function App(): JSX.Element {
     // @ts-expect-error: library has no proper TS definitions
     <CurvedBottomBar.Navigator
       type="DOWN"
-      style={styles.bottomBar}
-      shadowStyle={styles.shawdow}
       height={72}
       circleWidth={60}
       bgColor="white"
-      initialRouteName="title1"
+      initialRouteName="HomePage"
       borderTopLeftRight
+      screenOptions={{ headerShown: false }}
       renderCircle={() => (
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => Alert.alert("Click Action")}
           >
-            <CircleIcon width={60} height={60} fill="red" color="red" />
+            <CircleIcon width={35} height={35} fill="red" />
           </TouchableOpacity>
         </Animated.View>
       )}
       tabBar={renderTabBar}
     >
       <CurvedBottomBar.Screen
-        name="title1"
+        name="HomePage"
         position="LEFT"
-        component={Screen1}
+        component={Home}
       />
       <CurvedBottomBar.Screen
-        name="title2"
+        name="AnalyticsPage"
         position="LEFT"
-        component={Screen2}
+        component={Analytics}
       />
       <CurvedBottomBar.Screen
-        name="title3"
+        name="CardPage"
         position="RIGHT"
-        component={Screen2}
+        component={Card}
       />
       <CurvedBottomBar.Screen
-        name="title4"
+        name="ProfilePage"
         position="RIGHT"
-        component={Screen2}
+        component={Profile}
       />
     </CurvedBottomBar.Navigator>
   );
@@ -126,28 +125,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  shawdow: {
-    shadowColor: "#DDDDDD",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-  },
   button: {
     flex: 1,
-    padding: 8,
+    padding: 14,
     justifyContent: "center",
+    backgroundColor: "#6172F3",
+    borderRadius: "50%",
   },
-  bottomBar: {},
   btnCircleUp: {
     width: 60,
     height: 60,
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#E8E8E8",
     bottom: 18,
     shadowColor: "#000",
     shadowOffset: {
@@ -161,23 +151,22 @@ export const styles = StyleSheet.create({
   imgCircle: {
     width: 30,
     height: 30,
-    tintColor: "gray",
   },
   tabbarItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
+  selectedTabBarItem: {
+    marginTop: 12, // spacing between icon and line
+    width: 40, // underline width (can be wider if you want)
+    height: 4, // thickness of the underline
+    borderTopRightRadius: "18px", // rounded edges for the line
+    borderTopLeftRadius: "18px", // rounded edges for the line
+    backgroundColor: "#6172F3", // active color
+  },
   img: {
     width: 30,
     height: 30,
-  },
-  screen1: {
-    flex: 1,
-    backgroundColor: "#BFEFFF",
-  },
-  screen2: {
-    flex: 1,
-    backgroundColor: "#FFEBCD",
   },
 });
