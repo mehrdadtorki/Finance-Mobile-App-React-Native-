@@ -78,7 +78,7 @@ export default function App(): JSX.Element {
     // @ts-expect-error: library has no proper TS definitions
     <CurvedBottomBar.Navigator
       type="DOWN"
-      height={72}
+      height={90}
       circleWidth={60}
       bgColor="white"
       initialRouteName="HomePage"
