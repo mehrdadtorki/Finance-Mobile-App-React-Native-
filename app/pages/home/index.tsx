@@ -9,15 +9,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Svg, { Path } from "react-native-svg";
-import WithdrawIcon from "../../../assets/icons/features/withdraw.svg";
-import TopUpIcon from "../../../assets/icons/features/topUp.svg";
-import PayIcon from "../../../assets/icons/features/topUp.svg";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {
+  default as PayIcon,
+  default as TopUpIcon,
+} from "../../../assets/icons/features/topUp.svg";
 import TransferIcon from "../../../assets/icons/features/transfer.svg";
+import WithdrawIcon from "../../../assets/icons/features/withdraw.svg";
 
-import SpotifyIcon from "../../../assets/icons/transactions/spotify.svg";
 import PaypalIcon from "../../../assets/icons/transactions/paypal.svg";
+import SpotifyIcon from "../../../assets/icons/transactions/spotify.svg";
+
+import CardCircuitIcon from "../../../assets/images/credit-card/Circuit.svg";
+import CardContentIcon from "../../../assets/images/credit-card/Content.svg";
+import CardContactLessIcon from "../../../assets/images/credit-card/icon-contactless.svg";
+import CardMasterCardIcon from "../../../assets/images/credit-card/mastercard.svg";
 
 const screen = Dimensions.get("screen");
 
@@ -33,13 +40,13 @@ const FEATURES = [
 const TRANSACTIONS = [
   {
     title: "Spotify",
-    description: "Description",
-    amount: "$25.00",
+    description: "Monthly Subscription",
+    amount: "-$15.00",
     icon: SpotifyIcon,
   },
   {
     title: "Paypal",
-    description: "Description",
+    description: "Earnings",
     amount: "$25.00",
     icon: PaypalIcon,
   },
@@ -69,12 +76,12 @@ export default function App() {
 
           <View style={styles.welcome}>
             <View style={styles.notification}>
-              <TouchableOpacity onPress={() => {}}>
-                <FontAwesome name="bell" size={20} color={"gray"} />
-              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={() => {}}> */}
+              <FontAwesome name="bell-o" size={20} color="white" />
+              {/* </TouchableOpacity> */}
             </View>
             <View style={styles.personalInfo}>
-              <Text style={styles.goodMorning}>Good morning</Text>
+              <Text style={styles.goodMorning}>Good morning 👋</Text>
               <Text style={styles.name}>Raisa Adriana</Text>
             </View>
           </View>
@@ -85,23 +92,44 @@ export default function App() {
           {/* Card */}
           <View style={styles.cardContainer}>
             <ImageBackground
-              source={require("@/assets/images/CardBG.png")}
+              source={require("@/assets/images/credit-card/CardBG.png")}
               style={styles.card}
               imageStyle={styles.cardImage}
             >
-              <View style={styles.topRow}>
-                <View style={styles.logo} />
-                <View style={styles.contactlessIcon} />
+              {/* Noise overlay */}
+              <ImageBackground
+                source={require("@/assets/images/credit-card/Noise.png")}
+                style={StyleSheet.absoluteFill}
+                imageStyle={styles.cardImageNoise} // keep same radius
+              />
+
+              {/* Content on top */}
+              <View style={styles.cardContent}>
+                <View style={styles.topRow}>
+                  <View>
+                    <CardContentIcon />
+                  </View>
+                  <View style={styles.contactlessIcon}>
+                    <CardContactLessIcon />
+                    <CardMasterCardIcon />
+                  </View>
+                </View>
+
+                <View>
+                  <Text style={styles.cardNumber}>•••• •••• •••• 2858</Text>
+                </View>
+
+                <View style={styles.bottomRow}>
+                  <View style={styles.balanceContainer}>
+                    <Text style={styles.balanceLabel}>Balance</Text>
+                    <Text style={styles.balanceValue}>$63,250.00</Text>
+                  </View>
+
+                  <View style={styles.chip}>
+                    <CardCircuitIcon />
+                  </View>
+                </View>
               </View>
-
-              <Text style={styles.cardNumber}>•••• •••• •••• 2858</Text>
-
-              <View style={styles.balanceContainer}>
-                <Text style={styles.balanceLabel}>Balance</Text>
-                <Text style={styles.balanceValue}>$63,250.00</Text>
-              </View>
-
-              <View style={styles.chip} />
             </ImageBackground>
           </View>
 
@@ -110,7 +138,7 @@ export default function App() {
             {FEATURES.map(({ title, Icon }) => (
               <View key={title} style={styles.featureItem}>
                 <View style={styles.featureCard}>
-                  <Icon width={70} height={70} />
+                  <Icon width={55} height={55} />
                 </View>
                 <Text style={styles.featureItemTitle}>{title}</Text>
               </View>
@@ -123,11 +151,21 @@ export default function App() {
               <Text style={styles.transactionsContainerTitle}>
                 Transactions
               </Text>
-              <Button
-                title="All Transactions"
-                onPress={() => {}}
-                color={"#ffffff"}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  /* do this */
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "transparent",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ color: "#101828" }}>All Transactions</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View style={styles.devider} />
 
@@ -219,27 +257,34 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "space-between",
   },
+  cardContent: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-between",
+  },
   cardImage: { borderRadius: 20 },
+  cardImageNoise: { borderRadius: 20, opacity: 0.1 },
   topRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  logo: { width: 40, height: 40, backgroundColor: "white", borderRadius: 8 },
+  bottomRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   contactlessIcon: {
-    width: 30,
-    height: 30,
-    backgroundColor: "white",
-    borderRadius: 15,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
   },
   cardNumber: { color: "white", fontSize: 22, letterSpacing: 4 },
   balanceContainer: { marginTop: 10 },
   balanceLabel: { color: "rgba(255,255,255,0.7)", fontSize: 14 },
   balanceValue: { color: "white", fontSize: 20, fontWeight: "bold" },
   chip: {
-    width: 50,
-    height: 40,
-    backgroundColor: "rgba(255,255,255,0.7)",
     borderRadius: 6,
     alignSelf: "flex-end",
   },

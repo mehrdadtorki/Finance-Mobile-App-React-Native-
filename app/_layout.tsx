@@ -1,5 +1,5 @@
 import NavigationBar from "@/components/navigation-bar/NavigationBar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
 export default function RootLayout() {
   return (
@@ -12,8 +12,8 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "red" }, // <- same background for all
-  header: { padding: 16, backgroundColor: "#007AFF" },
+  container: { flex: 1 },
+  header: { padding: 16 },
   headerText: { color: "#fff", fontSize: 18, fontWeight: "600" },
-  content: { flex: 1, color: "#06dbadff", backgroundColor: "#bb2b2bff" },
+  content: { flex: 1 },
 });
