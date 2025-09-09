@@ -1,7 +1,6 @@
 import Constants from "expo-constants";
 import * as React from "react";
 import {
-  Button,
   Dimensions,
   ImageBackground,
   StyleSheet,
@@ -11,6 +10,8 @@ import {
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+
 import {
   default as PayIcon,
   default as TopUpIcon,
@@ -28,7 +29,7 @@ import CardMasterCardIcon from "../../../assets/images/credit-card/mastercard.sv
 
 const screen = Dimensions.get("screen");
 
-// Feature items for mapping
+// Feature items
 const FEATURES = [
   { title: "Transfer", Icon: TransferIcon },
   { title: "Pay", Icon: PayIcon },
@@ -36,7 +37,7 @@ const FEATURES = [
   { title: "Withdraw", Icon: WithdrawIcon },
 ];
 
-// Transactions for mapping
+// Transactions
 const TRANSACTIONS = [
   {
     title: "Spotify",
@@ -52,7 +53,103 @@ const TRANSACTIONS = [
   },
 ];
 
+// --- Skeleton Loader ---
+const DashboardSkeleton = () => (
+  <SkeletonPlaceholder borderRadius={8}>
+    <SkeletonPlaceholder.Item flex={1} alignItems="center">
+      {/* Header */}
+      <SkeletonPlaceholder.Item
+        width={screen.width}
+        marginTop={screen.height * 0.4}
+      />
+
+      {/* Card */}
+      <SkeletonPlaceholder.Item
+        width={screen.width * 0.9}
+        height={200}
+        borderRadius={20}
+        marginTop={-screen.height * 0.15}
+      />
+
+      {/* Features */}
+      <SkeletonPlaceholder.Item
+        flexDirection="row"
+        justifyContent="space-between"
+        width={screen.width * 0.9}
+        paddingVertical={16}
+        paddingHorizontal={24}
+        borderRadius={12}
+        backgroundColor="#fff"
+        marginTop={20}
+      >
+        {[...Array(4)].map((_, i) => (
+          <SkeletonPlaceholder.Item key={i} alignItems="center" rowGap={8}>
+            <SkeletonPlaceholder.Item
+              width={55}
+              height={55}
+              borderRadius={30}
+            />
+            <SkeletonPlaceholder.Item width={40} height={12} />
+          </SkeletonPlaceholder.Item>
+        ))}
+      </SkeletonPlaceholder.Item>
+
+      {/* Transactions */}
+      <SkeletonPlaceholder.Item
+        width={screen.width * 0.9}
+        borderRadius={12}
+        paddingVertical={16}
+        paddingHorizontal={24}
+        marginTop={screen.height * 0.1}
+      >
+        <SkeletonPlaceholder.Item width={120} height={20} />
+        {[...Array(2)].map((_, i) => (
+          <SkeletonPlaceholder.Item
+            key={i}
+            flexDirection="row"
+            alignItems="center"
+            marginTop={screen.height * 0.06}
+          >
+            {/* Icon */}
+            <SkeletonPlaceholder.Item
+              width={40}
+              height={40}
+              borderRadius={12}
+            />
+            {/* Texts */}
+            <SkeletonPlaceholder.Item flex={1} marginLeft={12}>
+              <SkeletonPlaceholder.Item
+                width={100}
+                height={14}
+                borderRadius={4}
+                marginBottom={6}
+              />
+              <SkeletonPlaceholder.Item
+                width={160}
+                height={12}
+                borderRadius={4}
+              />
+            </SkeletonPlaceholder.Item>
+            {/* Price */}
+            <SkeletonPlaceholder.Item width={50} height={14} />
+          </SkeletonPlaceholder.Item>
+        ))}
+      </SkeletonPlaceholder.Item>
+    </SkeletonPlaceholder.Item>
+  </SkeletonPlaceholder>
+);
+
+// --- Main Component ---
 export default function App() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <DashboardSkeleton />;
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -76,9 +173,7 @@ export default function App() {
 
           <View style={styles.welcome}>
             <View style={styles.notification}>
-              {/* <TouchableOpacity onPress={() => {}}> */}
               <FontAwesome name="bell-o" size={20} color="white" />
-              {/* </TouchableOpacity> */}
             </View>
             <View style={styles.personalInfo}>
               <Text style={styles.goodMorning}>Good morning 👋</Text>
@@ -96,35 +191,28 @@ export default function App() {
               style={styles.card}
               imageStyle={styles.cardImage}
             >
-              {/* Noise overlay */}
               <ImageBackground
                 source={require("@/assets/images/credit-card/Noise.png")}
                 style={StyleSheet.absoluteFill}
-                imageStyle={styles.cardImageNoise} // keep same radius
+                imageStyle={styles.cardImageNoise}
               />
 
-              {/* Content on top */}
               <View style={styles.cardContent}>
                 <View style={styles.topRow}>
-                  <View>
-                    <CardContentIcon />
-                  </View>
+                  <CardContentIcon />
                   <View style={styles.contactlessIcon}>
                     <CardContactLessIcon />
                     <CardMasterCardIcon />
                   </View>
                 </View>
 
-                <View>
-                  <Text style={styles.cardNumber}>•••• •••• •••• 2858</Text>
-                </View>
+                <Text style={styles.cardNumber}>•••• •••• •••• 2858</Text>
 
                 <View style={styles.bottomRow}>
                   <View style={styles.balanceContainer}>
                     <Text style={styles.balanceLabel}>Balance</Text>
                     <Text style={styles.balanceValue}>$63,250.00</Text>
                   </View>
-
                   <View style={styles.chip}>
                     <CardCircuitIcon />
                   </View>
@@ -151,20 +239,8 @@ export default function App() {
               <Text style={styles.transactionsContainerTitle}>
                 Transactions
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  /* do this */
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: "transparent",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text style={{ color: "#101828" }}>All Transactions</Text>
-                </View>
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={{ color: "#101828" }}>All Transactions</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.devider} />
@@ -201,6 +277,7 @@ export default function App() {
   );
 }
 
+// --- styles remain same as you wrote
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -275,7 +352,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   contactlessIcon: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
@@ -301,11 +377,12 @@ const styles = StyleSheet.create({
   },
   featureItem: { rowGap: 8, alignItems: "center" },
   featureCard: {
-    borderRadius: "50%",
+    borderRadius: 30,
     alignItems: "center",
     backgroundColor: "#EEF4FF",
+    padding: 10,
   },
-  featureItemTitle: { fontSize: 12, fontWeight: 500, textAlign: "center" },
+  featureItemTitle: { fontSize: 12, fontWeight: "500", textAlign: "center" },
   transactionsContainer: {
     marginTop: 20,
     backgroundColor: "#fff",
@@ -322,13 +399,12 @@ const styles = StyleSheet.create({
   },
   transactionsContainerContent: {
     width: "100%",
-    overflow: "scroll",
     height: 130,
   },
   transactionsContainerTitle: {
     color: "#344054",
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: "500",
   },
   devider: {
     borderBottomColor: "#F2F4F7",
@@ -351,21 +427,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     borderColor: "#F2F4F7",
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0px 1px 2px rgba(40, 16, 30, 0.05)",
   },
   transactionItemCardTitle: {
     color: "#101828",
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: "500",
   },
   transactionItemCardDescription: { fontSize: 12, color: "gray" },
   transactionItemCardPrice: {
     color: "#344054",
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: "500",
     alignSelf: "center",
   },
 });

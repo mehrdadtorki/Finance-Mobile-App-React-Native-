@@ -81,6 +81,14 @@ export default function App(): JSX.Element {
       height={90}
       circleWidth={60}
       bgColor="white"
+      style={{
+        shadowOffset: {
+          width: 1,
+          height: 12,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 16.0,
+      }}
       initialRouteName="HomePage"
       borderTopLeftRight
       screenOptions={{ headerShown: false }}

@@ -1,8 +1,7 @@
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { View } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 
-const screen = Dimensions.get("screen");
 const TransactionsChart = () => {
   const barData = [
     {
